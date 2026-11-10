@@ -1,0 +1,27 @@
+mqtt:
+  host: mosquitto
+
+detectors:
+  cpu:
+    type: cpu
+    num_threads: 3
+
+go2rtc:
+  streams:
+    navcam:
+      - "ffmpeg:http://CAMERA_IP/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=USER&password=PASS#video=copy#audio=copy#audio=opus"
+    navcam_sub:
+      - "ffmpeg:http://CAMERA_IP/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=USER&password=PASS"
+
+cameras:
+  navcam:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/navcam_sub
+          input_args: preset-rtsp-restream
+    detect:
+      fps: 10
+    record:
+      enabled: false
+    objects:
+      track: [person, chair, couch, bench, bicycle, dog, backpack, suitcase]

@@ -1,0 +1,40 @@
+auth:
+  enabled: false
+
+mqtt:
+  host: mosquitto
+  port: 1883
+  topic_prefix: frigate
+
+detectors:
+  cpu:
+    type: cpu
+    num_threads: 3
+
+cameras:
+  navcam:
+    ffmpeg:
+      inputs:
+        - path: rtsp://host.docker.internal:8554/navcam
+          roles:
+            - detect
+    detect:
+      enabled: true
+      fps: 5
+      width: 1280
+      height: 720
+    motion:
+      threshold: 35
+      contour_area: 30
+    snapshots:
+      enabled: true
+      timestamp: true
+      bounding_box: true
+    objects:
+      track: [person, chair, couch, bench, bicycle, dog, backpack, suitcase]
+      filters:
+        person:
+          min_score: 0.55
+          threshold: 0.7
+
+version: 0.18-0

@@ -1,0 +1,18 @@
+services:
+  frigate:
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    shm_size: "256mb"
+    volumes:
+      - ./config:/config
+      - ./storage:/media/frigate
+    ports:
+      - "8971:8971"
+      - "127.0.0.1:5000:5000"
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto-config:/mosquitto/config
